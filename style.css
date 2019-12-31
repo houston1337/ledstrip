@@ -1,0 +1,150 @@
+body
+{
+	width: 100%;
+}
+.square
+{
+	width: 300px;
+	height: 340px;
+	border-radius: 20px;
+	-webkit-box-shadow: -1px 4px 21px -1px rgba(0,0,0,0.56);
+	-moz-box-shadow: -1px 4px 21px -1px rgba(0,0,0,0.56);
+	box-shadow: -1px 4px 21px -1px rgba(0,0,0,0.56);
+	margin: 10%;
+	padding: 20px, 20px, 20px, 20px;
+	justify-content: center;
+	align-content: center;
+	font-family: 'Nunito';
+
+}
+form{
+	display: grid;
+	margin-right: auto;
+	margin-left: auto;
+}
+ input[type ="color"]
+ {
+	width: 30px;
+	height: 30px;
+	border-radius: 5px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: rgb(169,169,169);
+	background-color: transparent;
+	outline:none;
+
+ }
+ .result{
+
+ 	padding-left: 50px;
+ 	padding-bottom: 50px;
+ 	padding-right: 50px;
+ 	padding-top: 0px;
+
+ }
+
+ .select
+ {
+ 	
+ 	margin-top: 10%;
+ 	margin-left: auto;
+    margin-right: auto;
+    height: 25px;
+    width: 100px;
+    border-radius: 15px;
+    outline:none;
+	text-align-last: center;
+	 font-family: 'Nunito'; /* Имя шрифта */
+    src: url(Nunitoregular.ttf); /* Путь к файлу со шрифтом */
+
+    
+ }
+
+.select:after {
+ 	border-radius: 0px, 0px, 15px, 15px;
+ 	outline:none;
+ }
+
+ @font-face {
+    font-family: 'Nunito'; /* Имя шрифта */
+    src: url(Nunitoregular.ttf); /* Путь к файлу со шрифтом */
+   }
+
+
+
+input[type="button"]{
+	
+	margin-left: 10px;
+    margin-right: 10px;
+    height: 70px;
+    width:  200px;
+     text-align: center;
+     border-radius: 15px;
+     background-color:  transparent;
+	 font-family: 'Nunito'; /* Имя шрифта */
+    src: url(Nunitoregular.ttf); /* Путь к файлу со шрифтом */.
+    font-weight: 40px;
+     outline:none;
+} 
+
+
+@media screen and (width: 1200px)
+{
+
+.Form
+ {
+
+ 	width: 900px;
+ 	height: 900px;
+ 	
+ 	font-size: 50px;
+
+ }
+.square
+{
+	width: 900px;
+	height: 900px;
+	border-radius: 120px;
+	-webkit-box-shadow: -1px 4px 21px -1px rgba(0,0,0,0.56);
+	-moz-box-shadow: -1px 4px 21px -1px rgba(0,0,0,0.56);
+	box-shadow: -1px 4px 21px -1px rgba(0,0,0,0.56);
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;  
+	margin-bottom: 20px;
+	padding: 20px, 20px, 20px, 20px;
+	
+	font-family: 'Nunito';
+
+}
+.select
+ {
+ 	display: inline-block;
+ 	margin-top: 50px;
+ 	margin-left: auto;
+    margin-right: auto;
+    height: 100px;
+    width: 700px;
+    border-radius: 15px;
+    outline:none;
+	text-align-last: center;
+	 font-family: 'Nunito'; /* Имя шрифта */
+    src: url(Nunitoregular.ttf); /* Путь к файлу со шрифтом */
+
+    
+ }
+
+ input[type="button"]{
+	font-size: 50px;
+	height: 100px;
+	width: 700px;
+	margin-left: 50px;
+ }
+ input[type ="range"]
+ {
+	width: 500px;
+
+	
+
+ }
+}

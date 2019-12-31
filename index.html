@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>LIGHT STRIP</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script type="text/javascript" src="jquery.js"></script>
+
+
+</head>
+<body>
+	<div class="square">
+		<div class="inner">
+			<form id="Form" class="Form" name="Form" method="GET" >
+				<select id="select"  class="select"  required>
+					<option value=""></option>
+					<option value="single">Single</option>
+					<option value="rainbow">Rainbow</option>
+					<option value="gradient">Gradient</option>
+					<option value="solid">Solid</option>
+					<option value="off">off</option>
+				</select>
+
+				<div id="result" class="result"></div>
+			</div>
+
+		</form>
+	</div>
+
+
+
+	<script type="text/javascript">
+
+		var number_single;
+		var color_single;
+		var number_to=null;
+		var number_move=null;
+		var number_quantity;
+		var number_start_gradient;
+		var number_end_gradient;
+		var color_start_gradient;
+		var color_end_gradient;
+		var number_start_solid;
+		var number_end_solid;
+		var color_solid;
+		var color_single_r;
+		var color_single_g;
+		var color_single_b;
+		var col_start_grad_r;
+		var col_start_grad_g;
+		var col_start_grad_b;
+		var col_end_grad_r;
+		var col_end_grad_g;
+		var col_end_grad_b;
+		var col_solid_r;
+		var col_solid_g;
+		var col_solid_b;
+		var xhr = new XMLHttpRequest();
+
+		function hexToRgb(hex) {
+  		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  		return result ? {
+    		r: parseInt(result[1], 16),
+    		g: parseInt(result[2], 16),
+   			b: parseInt(result[3], 16)
+  			} : null;
+		}
+
+		$(document).on('change', '.Form #select', function() {
+			var val = $(this).val(),
+			repl = $('.Form #result');
+			if (val == 'single')
+			{
+		repl.html('<div>LED <input id="number_single" name="number_single" type="range" min="1" max="18" value="0"><output id="outnumber" for="number_single"></output></div><p>COLOR     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p><input type="button" value="SEND" id="send"></p>');//добавляем поля для 	single
+
+
+		/*функция вывода значения ползунка и присвоения значения глобальной переменной number_single*/
+		$(function input_single_number() {
+			var elem;
+			$("#number_single").change(function() {
+				elem = $(this);
+				elem
+				.next("#outnumber")
+				.text(elem.val());//выводим значения ползунка
+				number_single = elem.val();
+				console.log('single number: ' + number_single);//отправляем в консоль
+
+			})
+			.trigger('change');
+		});
+
+		/*функция присвоения значения глобальной переменной color_single*/
+		$(function input_single_color() {
+			var color;
+			$("#color_single").change(function() {
+				color = $(this);
+				color_single = color.val();
+				console.log('single color: ' + color_single);
+			})
+			.trigger('change');
+		});
+
+
+		//color_single_g = hexToRgb(color_single).g;
+		//color_single_b = hexToRgb(color_single).b;
+
+
+		/*функция отправки данных */
+		$('#send').click(function ()
+		{
+			color_single_r = hexToRgb(color_single).r;
+			color_single_g = hexToRgb(color_single).g;
+			color_single_b = hexToRgb(color_single).b;
+			var led =
+			{
+				num_sing: number_single,
+				col_sing_r: color_single_r,
+				col_sing_g: color_single_g,
+				col_sing_b: color_single_b,
+
+			}
+
+
+			xhr.open("POST", '/MyLedstripSingle', true);
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+			xhr.send(JSON.stringify(led));
+
+			/*xhr.onreadystatechange = function()
+			{
+				console.log(xhr.responseText);
+
+			}*/
+
+		});
+
+
+	}
+
+	else if (val == 'rainbow')
+	{
+		repl.html('<p>fill to <input id="number_to" name="number_to" type="range" min="1" max="18" value="18" > <output id="outnumber" for="number_to"></output></p>     <p>movement <input id="number_move" name="number_move" type="range" min="0" max="255" value="0"> <output id="outnumber" for="number_move"></output></p><p>quantity n<input id="number_quantity" name="number_quantity" type="range" min="0" max="255" value="11" > <output id="outnumber" for="number_quantity"></output></p><p><input type="button" value="SEND" id="sendr"></p>'); // добавляем поля формы
+
+
+		/*присваиваем значения глобальной переменной number_start_rainbow*/
+		$(function() {
+			var el;
+			$("#number_to").change(function() {
+				el = $(this);
+				el
+				.next("#outnumber")
+				.text(el.val());
+
+				number_to = el.val();
+				console.log(number_to);
+
+			})
+			.trigger('change');
+		});
+
+		/*присваиваем значения глобальной переменной number_end_rainbow*/
+		$(function() {
+			var el;
+			$("#number_move").change(function() {
+				el = $(this);
+				el
+				.next("#outnumber")
+				.text(el.val());
+				number_move = el.val();
+				console.log(number_move);
+			})
+			.trigger('change');
+		});
+
+		$(function() {
+			var el;
+			$("#number_quantity").change(function() {
+				el = $(this);
+				el
+				.next("#outnumber")
+				.text(el.val());
+				number_quantity = el.val();
+				console.log(number_quantity);
+			})
+			.trigger('change');
+		});
+
+		$('#sendr').click(function ()
+		{
+
+			var xhr = new XMLHttpRequest();
+			var led =
+			{
+				num_to: number_to,
+				num_move: number_move,
+				num_quantity: number_quantity,
+			}
+
+			xhr.open("POST", '/MyLedstripRainbow', true);
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+			xhr.send(JSON.stringify(led));
+
+
+
+
+		});
+
+	}
+	else if (val == 'gradient')
+	{
+		repl.html('<p class="gradient">START <input id="number_start_gradient" name="number_start_gradient" type="range" min="1" max="18" value="1"> <output id="outnumber" for="number_start_gradient"></output></p>     <p>END &nbsp &nbsp <input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="18" value="18"> <output id="outnumber" for="number_end_gradient"></output></p>	<p>START COLOR &nbsp<input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p> <p>END COLOR &nbsp &nbsp &nbsp<input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
+		/* вывод значения ползунка и присвоение значения глобальной переменной number_start_gradient*/
+		$(function() {
+			var elem;
+			$("#number_start_gradient").change(function() {
+				elem = $(this);
+				elem
+				.next("#outnumber")
+				.text(elem.val());
+				number_start_gradient = elem.val();
+				console.log("number_start_gradient: " + number_start_gradient);
+			})
+			.trigger('change');
+		});
+
+		/* вывод значения ползунка и присвоение значения глобальной переменной number_end_gradient*/
+		$(function() {
+			var el;
+			$("#number_end_gradient").change(function() {
+				el = $(this);
+				el
+				.next("#outnumber")
+				.text(el.val());
+
+				number_end_gradient = el.val();
+				console.log("number_end_gradient: "+ number_end_gradient);
+
+			})
+			.trigger('change');
+		});
+		/*присваиваем значение глобальной переменной color_start_gradient*/
+		$(function() {
+			var color;
+			$("#color_start_gradient").change(function() {
+				color = $(this);
+
+				color_start_gradient = color.val();
+				console.log('start grad col ' + color_start_gradient);
+
+			})
+			.trigger('change');
+		});
+		/*присваиваем значение глобальной переменной color_end_gradient*/
+		$(function() {
+			var color;
+			$("#color_end_gradient").change(function() {
+				color = $(this);
+
+				color_end_gradient = color.val();
+				console.log('end grad col' + color_end_gradient);
+
+			})
+			.trigger('change');
+		});
+
+		/*функция отправки данных */
+		$('#send').click(function ()
+		{
+			col_start_grad_r=hexToRgb(color_start_gradient).r;
+			col_start_grad_g=hexToRgb(color_start_gradient).g;
+			col_start_grad_b=hexToRgb(color_start_gradient).b;
+			col_end_grad_r=hexToRgb(color_end_gradient).r;
+			col_end_grad_g=hexToRgb(color_end_gradient).g;
+			col_end_grad_b=hexToRgb(color_end_gradient).b;
+
+			var led =
+			{
+				num_start_grad: number_start_gradient,
+				num_end_grad: 	number_end_gradient ,
+				color_start_grad_r: col_start_grad_r,
+				color_start_grad_g: col_start_grad_g,
+				color_start_grad_b: col_start_grad_b,
+				color_end_grad_r: col_end_grad_r,
+				color_end_grad_g: col_end_grad_g,
+				color_end_grad_b: col_end_grad_b,
+
+			}
+
+			xhr.open("POST", '/MyLedstripGradient', true);
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+			xhr.send(JSON.stringify(led));
+
+
+
+
+		});
+
+	}
+	else if (val == 'solid')
+	{
+		repl.html('<p>START <input id="number_start_solid" name="number_start_solid" type="range" min="1" max="18" value="0"> <output id="outnumber" for="number_start_solid"></output></p>     <p>END&nbsp &nbsp &nbsp<input id="number_end_solid" name="number_end_solid" type="range" min="1" max="18" value="18"> <output id="outnumber" for="number_end_solid"></output></p>	<p>COLOR <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p><input type="button" value="SEND" id="send"></p>');
+		/*выводим значение ползунка и присваиваем  значение глобальной переменной number_start_solid*/
+		$(function() {
+			var elem;
+			$("#number_start_solid").change(function() {
+				elem = $(this);
+				elem
+				.next("#outnumber")
+				.text(elem.val());
+				number_start_solid = elem.val();
+				console.log("number_start_solid:" + number_start_solid);
+			})
+			.trigger('change');
+		});
+
+		/*выводим значение ползунка и присваиваем  значение глобальной переменной number_end_solid*/
+		$(function() {
+			var elem;
+			$("#number_end_solid").change(function() {
+				elem = $(this);
+				elem
+				.next("#outnumber")
+				.text(elem.val());
+
+				number_end_solid = elem.val();
+				console.log("number_end_solid:" +number_end_solid);
+
+			})
+			.trigger('change');
+		});
+
+		/*присваиваем  значение глобальной переменной color_solid*/
+		$(function() {
+			var color;
+			$("#color_solid").change(function() {
+				color = $(this);
+
+				color_solid = color.val();
+				console.log('color_solid: ' + color_solid);
+
+			})
+			.trigger('change');
+		});
+
+		$('#send').click(function ()
+		{
+			col_solid_r = hexToRgb(color_solid).r;
+			col_solid_g = hexToRgb(color_solid).g;
+			col_solid_b = hexToRgb(color_solid).b;
+
+			var led =
+			{
+				number_start_solid: number_start_solid,
+				number_end_solid: number_end_solid,
+				color_solid_r: col_solid_r,
+				color_solid_g: col_solid_g,
+				color_solid_b: col_solid_b,
+			}
+
+			xhr.open("POST", '/MyLedstripSolid', true);
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+			xhr.send(JSON.stringify(led));
+
+
+
+
+		});
+
+
+	}
+	else if (val == 'off')
+	{
+		repl.html('<p><input type="button" value="SEND" id="send"></p>');
+		$('#send').click(function ()
+		{
+			xhr.open("POST", '/off', true);
+			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+			xhr.send(JSON.stringify());
+		});
+	}
+
+});
+
+
+
+</script>
+</body>
+</html>
