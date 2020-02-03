@@ -54,6 +54,11 @@
 		var col_solid_r;
 		var col_solid_g;
 		var col_solid_b;
+		var brightness_single;
+		var brightness_rain;
+		var brightness_gradient;
+		var brightness_solid;	
+
 		var xhr = new XMLHttpRequest();
 
 		function hexToRgb(hex) {
@@ -70,7 +75,7 @@
 			repl = $('.Form #result');
 			if (val == 'single')
 			{
-		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="18" value="0" class="range blue"><output id="outnumber" for="number_single"></output></p></div><p>COLOR</p><p>     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p><input type="button" value="SEND" id="send"></p>');//добавляем поля для 	single
+		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="18" value="0" class="range blue"></p></div><p>COLOR</p><p>     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p>BRIGHTNESS</p><p><input id="brightness_single" name="brightness_single" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>  ');//добавляем поля для 	single
 
 
 		/*функция вывода значения ползунка и присвоения значения глобальной переменной number_single*/
@@ -82,8 +87,18 @@
 				.next("#outnumber")
 				.text(elem.val());//выводим значения ползунка
 				number_single = elem.val();
-				console.log('single number: ' + number_single);//отправляем в консоль
+				console.log('single number: ' + number_single );//отправляем в консоль
 
+			})
+			.trigger('change');
+		});
+		$(function input_single_brigtness() {
+			var elem;
+			$("#brightness_single").change(function() {
+				elem = $(this);	
+				brightness_single = elem.val();
+				console.log('single brighness: ' + brightness_single + '%');//отправляем в консоль
+				brightness_single = brightness_single/100;
 			})
 			.trigger('change');
 		});
@@ -99,17 +114,12 @@
 			.trigger('change');
 		});
 
-
-		//color_single_g = hexToRgb(color_single).g;
-		//color_single_b = hexToRgb(color_single).b;
-
-
 		/*функция отправки данных */
 		$('#send').click(function ()
 		{
-			color_single_r = hexToRgb(color_single).r;
-			color_single_g = hexToRgb(color_single).g;
-			color_single_b = hexToRgb(color_single).b;
+			color_single_r = (hexToRgb(color_single).r)*brightness_single;
+			color_single_g = (hexToRgb(color_single).g)*brightness_single;
+			color_single_b = (hexToRgb(color_single).b)*brightness_single;
 			var led =
 			{
 				num_sing: number_single,
@@ -137,7 +147,7 @@
 
 	else if (val == 'rainbow')
 	{
-		repl.html('<p>fill to</p> <p class="non"><input id="number_to" name="number_to" type="range" min="1" max="18" value="18" class="range blue"> <output id="outnumber" for="number_to"></output></p>     <p>movement</p><p class ="non"> <input id="number_move" name="number_move" type="range" min="0" max="255" value="0" class="range pink"> <output id="outnumber" for="number_move"></output></p><p >quantity n</p><p class="non"><input id="number_quantity" name="number_quantity" type="range" min="0" max="255" value="11" class="range purple"> <output id="outnumber" for="number_quantity"></output></p><p><input type="button" value="SEND" id="sendr"></p>'); // добавляем поля формы
+		repl.html('<p>fill to</p> <p class="non"><input id="number_to" name="number_to" type="range" min="1" max="18" value="18" class="range blue"> <output id="outnumber" for="number_to"></output></p>     <p>movement</p><p class ="non"> <input id="number_move" name="number_move" type="range" min="0" max="255" value="0" class="range pink"> <output id="outnumber" for="number_move"></output></p><p >quantity n</p><p class="non"><input id="number_quantity" name="number_quantity" type="range" min="0" max="255" value="11" class="range purple"> <output id="outnumber" for="number_quantity"></output></p><p>BRIGHTNESS</p><p><input id="brightness_rain" name="brightness_rain" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="sendr"></p>'); // добавляем поля формы
 
 
 		/*присваиваем значения глобальной переменной number_start_rainbow*/
@@ -152,6 +162,17 @@
 				number_to = el.val();
 				console.log(number_to);
 
+			})
+			.trigger('change');
+		});
+
+		$(function input_rain_brigtness() {
+			var elem;
+			$("#brightness_rain").change(function() {
+				elem = $(this);
+				brightness_rain = elem.val();
+				console.log('rain brighness: ' + brightness_rain);//отправляем в консоль
+				brightness_rain = brightness_rain/100;
 			})
 			.trigger('change');
 		});
@@ -206,7 +227,7 @@
 	}
 	else if (val == 'gradient')
 	{
-		repl.html('<p ">START</p><p class="non"><input id="number_start_gradient" name="number_start_gradient" type="range" min="1" max="18" value="1" class="range purple"> <output id="outnumber" for="number_start_gradient"></output></p><p>END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_gradient"></output></p><p>START COLOR</p><p><input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p>END COLOR</p><p><input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
+		repl.html('<p ">START</p><p class="non"><input id="number_start_gradient" name="number_start_gradient" type="range" min="1" max="18" value="1" class="range purple"> <output id="outnumber" for="number_start_gradient"></output></p><p>END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_gradient"></output></p><p>START COLOR</p><p><input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p>END COLOR</p><p><input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p>BRIGHTNESS</p><p><input id="brighness_gradient" name="brighness_gradient" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
 		/* вывод значения ползунка и присвоение значения глобальной переменной number_start_gradient*/
 		$(function() {
 			var elem;
@@ -260,16 +281,26 @@
 			})
 			.trigger('change');
 		});
+		$(function input_grad_brigtness() {
+			var elem;
+			$("#brighness_gradient").change(function() {
+				elem = $(this);
+				brighness_gradient = elem.val();
+				console.log('gradient brighness: ' + brighness_gradient);//отправляем в консоль
+				brighness_gradient = brighness_gradient/100;
 
+			})
+			.trigger('change');
+		});
 		/*функция отправки данных */
 		$('#send').click(function ()
 		{
-			col_start_grad_r=hexToRgb(color_start_gradient).r;
-			col_start_grad_g=hexToRgb(color_start_gradient).g;
-			col_start_grad_b=hexToRgb(color_start_gradient).b;
-			col_end_grad_r=hexToRgb(color_end_gradient).r;
-			col_end_grad_g=hexToRgb(color_end_gradient).g;
-			col_end_grad_b=hexToRgb(color_end_gradient).b;
+			col_start_grad_r=(hexToRgb(color_start_gradient).r)*brighness_gradient;
+			col_start_grad_g=(hexToRgb(color_start_gradient).g)*brighness_gradient;
+			col_start_grad_b=(hexToRgb(color_start_gradient).b)*brighness_gradient;
+			col_end_grad_r=(hexToRgb(color_end_gradient).r)*brighness_gradient;
+			col_end_grad_g=(hexToRgb(color_end_gradient).g)*brighness_gradient;
+			col_end_grad_b=(hexToRgb(color_end_gradient).b)*brighness_gradient;
 
 			var led =
 			{
@@ -296,7 +327,7 @@
 	}
 	else if (val == 'solid')
 	{
-		repl.html('<p>START</p> <p class="non"><input id="number_start_solid" name="number_start_solid" type="range" min="1" max="18" value="0" class="range purple"> <output id="outnumber" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_solid"></output></p>	<p>COLOR</p><p> <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p><input type="button" value="SEND" id="send"></p>');
+		repl.html('<p>START</p> <p class="non"><input id="number_start_solid" name="number_start_solid" type="range" min="1" max="18" value="0" class="range purple"> <output id="outnumber" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_solid"></output></p>	<p>COLOR</p><p> <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p>BRIGHTNESS</p><p><input id="brighness_solid" name="brighness_solid" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');
 		/*выводим значение ползунка и присваиваем  значение глобальной переменной number_start_solid*/
 		$(function() {
 			var elem;
@@ -340,11 +371,22 @@
 			.trigger('change');
 		});
 
+		$(function input_solid_brigtness() {
+			var elem;
+			$("#brighness_solid").change(function() {
+				elem = $(this);
+				brighness_solid = elem.val();
+				console.log('solids brighness: ' + brighness_solid);//отправляем в консоль
+				brighness_solid= brighness_solid/100;
+			})
+			.trigger('change');
+		});
+
 		$('#send').click(function ()
 		{
-			col_solid_r = hexToRgb(color_solid).r;
-			col_solid_g = hexToRgb(color_solid).g;
-			col_solid_b = hexToRgb(color_solid).b;
+			col_solid_r = (hexToRgb(color_solid).r)*brighness_solid;
+			col_solid_g = (hexToRgb(color_solid).g)*brighness_solid;
+			col_solid_b = (hexToRgb(color_solid).b)*brighness_solid;
 
 			var led =
 			{
