@@ -70,7 +70,7 @@
 			repl = $('.Form #result');
 			if (val == 'single')
 			{
-		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="18" value="0" class="range blue">  <output id="outnumber" for="number_single"></output></p></div><p>COLOR     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p><input type="button" value="SEND" id="send"></p>');//добавляем поля для 	single
+		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="18" value="0" class="range blue"><output id="outnumber" for="number_single"></output></p></div><p>COLOR</p><p>     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p><input type="button" value="SEND" id="send"></p>');//добавляем поля для 	single
 
 
 		/*функция вывода значения ползунка и присвоения значения глобальной переменной number_single*/
@@ -206,7 +206,7 @@
 	}
 	else if (val == 'gradient')
 	{
-		repl.html('<p ">START</p><p class="non"><input id="number_start_gradient" name="number_start_gradient" type="range" min="1" max="18" value="1" class="range purple"> <output id="outnumber" for="number_start_gradient"></output></p><p >END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_gradient"></output></p><p ">START COLOR &nbsp &nbsp <input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p >END COLOR &nbsp &nbsp &nbsp<input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
+		repl.html('<p ">START</p><p class="non"><input id="number_start_gradient" name="number_start_gradient" type="range" min="1" max="18" value="1" class="range purple"> <output id="outnumber" for="number_start_gradient"></output></p><p>END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_gradient"></output></p><p>START COLOR</p><p><input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p>END COLOR</p><p><input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
 		/* вывод значения ползунка и присвоение значения глобальной переменной number_start_gradient*/
 		$(function() {
 			var elem;
@@ -296,7 +296,7 @@
 	}
 	else if (val == 'solid')
 	{
-		repl.html('<p>START</p> <p class="non"><input id="number_start_solid" name="number_start_solid" type="range" min="1" max="18" value="0" class="range purple"> <output id="outnumber" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_solid"></output></p>	<p>COLOR <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p><input type="button" value="SEND" id="send"></p>');
+		repl.html('<p>START</p> <p class="non"><input id="number_start_solid" name="number_start_solid" type="range" min="1" max="18" value="0" class="range purple"> <output id="outnumber" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_solid"></output></p>	<p>COLOR</p><p> <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p><input type="button" value="SEND" id="send"></p>');
 		/*выводим значение ползунка и присваиваем  значение глобальной переменной number_start_solid*/
 		$(function() {
 			var elem;

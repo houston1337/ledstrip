@@ -169,9 +169,9 @@ form{
  }
  .result{
 
- 	padding-left: 25px;
+ 	margin-left: auto;
+  margin-right: auto;
  	padding-bottom: 50px;
- 	padding-right: 25px;
  	padding-top: 0px;
 
  }
@@ -182,8 +182,8 @@ form{
  	margin-top: 10%;
  	margin-left: auto;
     margin-right: auto;
-    height: 25px;
-    width: 100px;
+    height: 35px;
+    width: 200px;
     border-radius: 15px;
     outline:none;
 	text-align-last: center;
@@ -200,30 +200,28 @@ box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,25
  	outline:none;
  }
 
- 
-
-
 
 input[type="button"]{
  	
  	margin-left: 10px;
-     margin-right: 10px;
-     height: 70px;
-     width:  200px;
-      text-align: center;
-      border-radius: 49px;
-      background-color:  transparent;
- 	 font-weight: 40px;
-      outline:none;
-      position: relative;
-   background: -webkit-linear-gradient(left, #ff7093,#ff8386);
-   background: -o-linear-gradient(left, #ff7093, #ff8386);
-   background: linear-gradient(to right, #ff7093, #ff8386);
-   padding: 3px;
-      border: 0px;
-      outline: none;
-      transition: 0.7s;
-       color: #A3b1c6;
+  margin-right: 10px;
+  height: 70px;
+  width:  200px;
+  text-align: center;
+  border-radius: 49px;
+  background-color:  transparent;
+ 	font-weight: 40px;
+  outline:none;
+  position: relative;
+  background: -webkit-linear-gradient(left, #ff7093,#ff8386);
+  background: -o-linear-gradient(left, #ff7093, #ff8386);
+  background: linear-gradient(to right, #ff7093, #ff8386);
+  padding: 3px;
+  border: 0px;
+  outline: none;
+  transition: 0.7s;
+  color: #A3b1c6;
+  box-shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px    rgba(255,255,255, 0.5);
  } 
 input[type="button"]:hover{
 	
@@ -269,10 +267,6 @@ p.nongradient
   margin-bottom: 45px; 
  }
 
- .non{
-	margin-left: 75px;
-
-}
 .square
 {
 	width: 900px;
