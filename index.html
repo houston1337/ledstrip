@@ -6,34 +6,80 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script type="text/javascript" src="jquery.js"></script>
 
-
 </head>
 <body>
-	
-		
-			<form id="Form" class="Form" name="Form" method="GET" >
-				<select id="select"  class="select"  required>
-					<option value=""></option>
-					<option value="single">Single</option>
-					<option value="rainbow">Rainbow</option>
-					<option value="gradient">Gradient</option>
-					<option value="solid">Solid</option>
-					<option value="off">off</option>
-				</select>
+<div class="container2">
+	<div class="container">
+        <form class="toggle"  name= "toggle1">
+            <input type="radio" id="choice1" name="choice" value="creative" class="tog">
+            <label for="choice1">Left</label>
+            <input type="radio" id="choice2" name="choice" value="productive" class="tog">
+            <label for="choice2">RIGHT</label>
+            <div id="flap"><span class="content"></span></div>
+        </form>
+    </div>
+</div>
 
-				<div id="result" class="result"></div>
-		
+</form>
+	</div>
+		<form id="Form" class="Form" name="Form" method="GET" >
+			<select id="select"  class="select"  required>
+				<option value=""></option>
+				<option value="single">Single</option>
+				<option value="rainbow">Rainbow</option>
+				<option value="gradient">Gradient</option>
+				<option value="solid">Solid</option>
+				<option value="police">Police</option>
+				<option value="rainbow_wave">Rainbow wave</option>
+				<option value="off">off</option>
+			</select>
+	<div id="result" class="result"></div>
+</form>
+<script type="text/javascript">
 
-		</form>
-	
+
+var mode  =2;
+const st = {};
+/* верхний свитч*/
+document.toggle1.choice[1].checked=true;
+st.flap = document.querySelector('#flap');
+st.toggle = document.querySelector('.toggle');
+st.choice1 = document.querySelector('#choice1');
+st.choice2 = document.querySelector('#choice2');
+st.flap.addEventListener('transitionend', () => {
+  if (st.choice1.checked) {
+   st.toggle.style.transform = 'rotateY(-15deg)';
+   setTimeout(() => st.toggle.style.transform = '', 400);
+   console.log('L');
+		mode=1;
+  }
+	else {
+    st.toggle.style.transform = 'rotateY(15deg)';
+	  setTimeout(() => st.toggle.style.transform = '', 400);
+		console.log('R');
+		mode=2;
+	}
+})
+st.clickHandler = (e) => {
+  if (e.target.tagName === 'LABEL') {
+    setTimeout(() => {
+        st.flap.children[0].textContent = e.target.textContent;
+    }, 250);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => {
+	    st.flap.children[0].textContent = st.choice2.nextElementSibling.textContent;
+});
+
+document.addEventListener('click', (e) => st.clickHandler(e));
 
 
-	<script type="text/javascript">
 
-		var number_single;
+/*ПЕРЕМЕННЫЕ ДЛЯ ЛЕНТЫ*/
+		var number_single=1;
 		var color_single;
-		var number_to=null;
-		var number_move=null;
+		var number_to;
+		var number_move;
 		var number_quantity;
 		var number_start_gradient;
 		var number_end_gradient;
@@ -42,8 +88,8 @@
 		var number_start_solid;
 		var number_end_solid;
 		var color_solid;
-		var color_single_r;
-		var color_single_g;
+		var color_single_r ;
+		var color_single_g ;
 		var color_single_b;
 		var col_start_grad_r;
 		var col_start_grad_g;
@@ -57,10 +103,11 @@
 		var brightness_single;
 		var brightness_rain;
 		var brightness_gradient;
-		var brightness_solid;	
-
+		var brightness_solid;
 		var xhr = new XMLHttpRequest();
 
+
+/*ПЕРЕВОД ИЗ HEX в RGB*/
 		function hexToRgb(hex) {
   		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
   		return result ? {
@@ -69,218 +116,230 @@
    			b: parseInt(result[3], 16)
   			} : null;
 		}
+/*ОТСЛЕЖИВАНИЕ СОСТОЯНИЯ ВЕРХНЕГО СВИТЧА*/
+function selectElement(id, valueToSelect) {
+  let element = document.getElementById(id);
+  element.value = valueToSelect;
+}
+$(document).on('change', '.Form #select', function() {
+ $( ".toggle" ).change(function() {
+	selectElement('select', '');
+	repl.html('<p></p>');
+});
 
-		$(document).on('change', '.Form #select', function() {
-			var val = $(this).val(),
-			repl = $('.Form #result');
-			if (val == 'single')
-			{
-		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="18" value="0" class="range blue"></p></div><p>COLOR</p><p>     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p>BRIGHTNESS</p><p><input id="brightness_single" name="brightness_single" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>  ');//добавляем поля для 	single
+/*ОТСЛЕЖИВАНИЕ ВЫБОРА РЕЖИМА*/
+var val = $(this).val(),
+repl = $('.Form #result');
+
+/***************************************************************/
+/****************************ОДИН СВЕТОДИОД*********************/
+/***************************************************************/
+if (val == 'single'){
+	if (mode== 1){
+		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="12" value="1" class="range blue"><output id="outnumber_single" for="number_single"></output></p></div><p>COLOR</p><p>     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p>BRIGHTNESS</p><p><input id="brightness_single" name="brightness_single" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>  ');//добавляем поля для 	single
+
+	}
+	else if(mode==2){
+		repl.html('<div><p>LED</p> <p class="non"><input id="number_single" name="number_single" type="range" min="1" max="49" value="1" class="range blue"><output id="outnumber_single" for="number_single"></output></p></div><p>COLOR</p><p>     <input type="color" id="color_single" name="color_single" class="color" value="#e66465"></p><p>BRIGHTNESS</p><p><input id="brightness_single" name="brightness_single" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>  ');//добавляем поля для 	single
 
 
-		/*функция вывода значения ползунка и присвоения значения глобальной переменной number_single*/
-		$(function input_single_number() {
-			var elem;
-			$("#number_single").change(function() {
-				elem = $(this);
-				elem
-				.next("#outnumber")
-				.text(elem.val());//выводим значения ползунка
-				number_single = elem.val();
-				console.log('single number: ' + number_single );//отправляем в консоль
 
-			})
-			.trigger('change');
-		});
-		$(function input_single_brigtness() {
-			var elem;
-			$("#brightness_single").change(function() {
-				elem = $(this);	
-				brightness_single = elem.val();
-				console.log('single brighness: ' + brightness_single + '%');//отправляем в консоль
-				brightness_single = brightness_single/100;
-			})
-			.trigger('change');
-		});
+	}
+/*функция вывода значения ползунка и присвоения значения глобальной переменной number_single*/
+var slider_single=document.getElementById('number_single');
+var output_single=document.getElementById('outnumber_single');
+output_single.innerHTML = slider_single.value;
 
-		/*функция присвоения значения глобальной переменной color_single*/
-		$(function input_single_color() {
-			var color;
-			$("#color_single").change(function() {
-				color = $(this);
-				color_single = color.val();
-				console.log('single color: ' + color_single);
-			})
-			.trigger('change');
-		});
+slider_single.oninput = function(){
+	outnumber_single.innerHTML=this.value;
+	number_single=this.value;
+	console.log('single: ' + number_single);
+}
 
-		/*функция отправки данных */
-		$('#send').click(function ()
-		{
-			color_single_r = (hexToRgb(color_single).r)*brightness_single;
-			color_single_g = (hexToRgb(color_single).g)*brightness_single;
-			color_single_b = (hexToRgb(color_single).b)*brightness_single;
-			var led =
+
+
+$(function input_single_brigtness() {
+	var elem;
+	$("#brightness_single").change(function() {
+  	elem = $(this);
+		brightness_single = elem.val();
+		console.log('single brighness: ' + brightness_single + '%');//отправляем в консоль
+		brightness_single = brightness_single/100;
+	})
+	.trigger('change');
+});
+
+/*функция присвоения значения глобальной переменной color_single*/
+$(function input_single_color() {
+	var color;
+	$("#color_single").change(function() {
+		color = $(this);
+		color_single = color.val();
+		console.log('single color: ' + color_single);
+	})
+	.trigger('change');
+});
+
+/*функция отправки данных */
+$('#send').click(function (){
+	color_single_r = (hexToRgb(color_single).r)*brightness_single;
+	color_single_g = (hexToRgb(color_single).g)*brightness_single;
+	color_single_b = (hexToRgb(color_single).b)*brightness_single;
+	var led =
 			{
 				num_sing: number_single,
 				col_sing_r: color_single_r,
 				col_sing_g: color_single_g,
 				col_sing_b: color_single_b,
-
+				mode: mode,
 			}
-
-
-			xhr.open("POST", '/MyLedstripSingle', true);
-			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-			xhr.send(JSON.stringify(led));
-
+	xhr.open("POST", '/MyLedstripSingle', true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+	xhr.send(JSON.stringify(led));
 			/*xhr.onreadystatechange = function()
 			{
 				console.log(xhr.responseText);
 
 			}*/
 
-		});
+});
+}
 
+/***************************************************************/
+/****************************РАДУГА*****************************/
+/***************************************************************/
+
+else if (val == 'rainbow'){
+	if (mode== 1){
+		repl.html('<p>fill to</p> <p class="non"><input id="number_to" type="range" min="1" max="12" value="12" class="range blue"> <output id="outnumber_rain" ></output></p>     <p>movement</p><p class ="non"> <input id="number_move" name="number_move" type="range" min="0" max="99" value="0" class="range pink"> <output id="output_move""></output></p><p >quantity n</p><p class="non"><input id="number_quantity"  type="range" min="0" max="99" value="11" class="range purple"> <output id="outnumber_q"></output><p><input type="button" value="SEND" id="sendr"></p>'); // добавляем поля формы
+		number_to=12;
+		number_move=0;
+		number_quantity=11;
 
 	}
+	else if (mode ==2){
+		repl.html('<p>fill to</p> <p class="non"><input id="number_to"  type="range" min="1" max="49" value="49" class="range blue"> <output id="outnumber_rain"></output></p>     <p>movement</p><p class ="non"> <input id="number_move" name="number_move" type="range" min="0" max="99" value="0" class="range pink"> <output id="output_move" ></output></p><p >quantity n</p><p class="non"><input id="number_quantity"  type="range" min="0" max="99" value="11" class="range purple"> <output id="outnumber_q"></output></p><p><input type="button" value="SEND" id="sendr"></p>'); // добавляем поля формы
+		number_to=49;
+		number_move=0;
+		number_quantity=11;
+	}
+/*присваиваем значения глобальной переменной number_start_rainbow*/
+var slider_s_rain=document.getElementById('number_to');
+var output_s_rain=document.getElementById('outnumber_rain');
+output_s_rain.innerHTML = slider_s_rain.value;
 
-	else if (val == 'rainbow')
-	{
-		repl.html('<p>fill to</p> <p class="non"><input id="number_to" name="number_to" type="range" min="1" max="18" value="18" class="range blue"> <output id="outnumber" for="number_to"></output></p>     <p>movement</p><p class ="non"> <input id="number_move" name="number_move" type="range" min="0" max="255" value="0" class="range pink"> <output id="outnumber" for="number_move"></output></p><p >quantity n</p><p class="non"><input id="number_quantity" name="number_quantity" type="range" min="0" max="255" value="11" class="range purple"> <output id="outnumber" for="number_quantity"></output></p><p>BRIGHTNESS</p><p><input id="brightness_rain" name="brightness_rain" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="sendr"></p>'); // добавляем поля формы
+slider_s_rain.oninput = function(){
+	output_s_rain.innerHTML=this.value;
+	number_to=this.value;
+	console.log('number_to: ' + number_to);
+}
 
 
-		/*присваиваем значения глобальной переменной number_start_rainbow*/
-		$(function() {
-			var el;
-			$("#number_to").change(function() {
-				el = $(this);
-				el
-				.next("#outnumber")
-				.text(el.val());
 
-				number_to = el.val();
-				console.log(number_to);
+/*присваиваем значения глобальной переменной number_end_rainbow*/
+var slider_move_rain=document.getElementById('number_move');
+var output_move_rain=document.getElementById('output_move');
+output_move_rain.innerHTML = slider_move_rain.value;
 
-			})
-			.trigger('change');
-		});
+slider_move_rain.oninput = function(){
+	output_move_rain.innerHTML=this.value;
+	number_move=this.value;
+	console.log('number_move: ' + number_move);
+}
 
-		$(function input_rain_brigtness() {
-			var elem;
-			$("#brightness_rain").change(function() {
-				elem = $(this);
-				brightness_rain = elem.val();
-				console.log('rain brighness: ' + brightness_rain);//отправляем в консоль
-				brightness_rain = brightness_rain/100;
-			})
-			.trigger('change');
-		});
 
-		/*присваиваем значения глобальной переменной number_end_rainbow*/
-		$(function() {
-			var el;
-			$("#number_move").change(function() {
-				el = $(this);
-				el
-				.next("#outnumber")
-				.text(el.val());
-				number_move = el.val();
-				console.log(number_move);
-			})
-			.trigger('change');
-		});
 
-		$(function() {
-			var el;
-			$("#number_quantity").change(function() {
-				el = $(this);
-				el
-				.next("#outnumber")
-				.text(el.val());
-				number_quantity = el.val();
-				console.log(number_quantity);
-			})
-			.trigger('change');
-		});
+var slider_q_rain=document.getElementById('number_quantity');
+var output_q_rain=document.getElementById('outnumber_q');
+output_q_rain.innerHTML = slider_q_rain.value;
 
-		$('#sendr').click(function ()
-		{
+slider_q_rain.oninput = function(){
+	output_q_rain.innerHTML=this.value;
+	number_quantity=this.value;
+	console.log('number_quantity: ' + number_quantity);
+}
 
-			var xhr = new XMLHttpRequest();
-			var led =
+/*ОТПРАВЛЯЕМ ДАННЫЕ*/
+$('#sendr').click(function ()	{
+	var xhr = new XMLHttpRequest();
+	var led =
 			{
 				num_to: number_to,
 				num_move: number_move,
 				num_quantity: number_quantity,
+				mode: mode,
+
 			}
+	xhr.open("POST", '/MyLedstripRainbow', true);
+	xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+	xhr.send(JSON.stringify(led));
+});
+}
 
-			xhr.open("POST", '/MyLedstripRainbow', true);
-			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
-			xhr.send(JSON.stringify(led));
-
-
-
-
-		});
+/***************************************************************/
+/****************************ГРАДИЕНТ***************************/
+/***************************************************************/
+else if (val == 'gradient'){
+ if (mode== 1){
+	repl.html('<p ">START</p><p class="non"><input id="number_start_gradient"  type="range" min="1" max="12" value="1" class="range purple"> <output id="outnumber_s_grad" for="number_start_gradient"></output></p><p>END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="12" value="12" class="range purple"> <output id="outnumber_e_grad" ></output></p><p>START COLOR</p><p><input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p>END COLOR</p><p><input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p>BRIGHTNESS</p><p><input id="brighness_gradient" name="brighness_gradient" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в фор
+	number_start_gradient=1;
+	number_end_gradient=12;
 
 	}
-	else if (val == 'gradient')
-	{
-		repl.html('<p ">START</p><p class="non"><input id="number_start_gradient" name="number_start_gradient" type="range" min="1" max="18" value="1" class="range purple"> <output id="outnumber" for="number_start_gradient"></output></p><p>END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_gradient"></output></p><p>START COLOR</p><p><input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p>END COLOR</p><p><input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p>BRIGHTNESS</p><p><input id="brighness_gradient" name="brighness_gradient" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
-		/* вывод значения ползунка и присвоение значения глобальной переменной number_start_gradient*/
-		$(function() {
-			var elem;
-			$("#number_start_gradient").change(function() {
-				elem = $(this);
-				elem
-				.next("#outnumber")
-				.text(elem.val());
-				number_start_gradient = elem.val();
-				console.log("number_start_gradient: " + number_start_gradient);
-			})
-			.trigger('change');
-		});
+	else if (mode ==2){
+		repl.html('<p ">START</p><p class="non"><input id="number_start_gradient"  type="range" min="1" max="49" value="1" class="range purple"> <output id="outnumber_s_grad" for="number_start_gradient"></output></p><p>END</p><p class="non"><input id="number_end_gradient" name="number_end_gradient" type="range" min="1" max="49" value="49" class="range purple"> <output id="outnumber_e_grad" ></output></p><p>START COLOR</p><p><input type="color" id="color_start_gradient" name="color_start_gradient" class="color" value="#FD0000"></p><p>END COLOR</p><p><input type="color" id="color_end_gradient" name="color_end_gradient" class="color" value="#0026FD"></p><p>BRIGHTNESS</p><p><input id="brighness_gradient" name="brighness_gradient" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');// добавляем поля в форму
+		number_start_gradient=1;
+		number_end_gradient=49;
 
-		/* вывод значения ползунка и присвоение значения глобальной переменной number_end_gradient*/
-		$(function() {
-			var el;
-			$("#number_end_gradient").change(function() {
-				el = $(this);
-				el
-				.next("#outnumber")
-				.text(el.val());
+	}
 
-				number_end_gradient = el.val();
-				console.log("number_end_gradient: "+ number_end_gradient);
+/* вывод значения ползунка и присвоение значения глобальной переменной number_start_gradient*/
+var slider_s_gradient=document.getElementById('number_start_gradient');
+var output_s_gradient=document.getElementById('outnumber_s_grad');
+output_s_gradient.innerHTML = slider_s_gradient.value;
 
-			})
-			.trigger('change');
-		});
-		/*присваиваем значение глобальной переменной color_start_gradient*/
-		$(function() {
-			var color;
-			$("#color_start_gradient").change(function() {
-				color = $(this);
+slider_s_gradient.oninput = function(){
+	output_s_gradient.innerHTML=this.value;
+	number_start_gradient=this.value;
+	console.log('number_start_gradient: ' + number_start_gradient);
+}
 
-				color_start_gradient = color.val();
-				console.log('start grad col ' + color_start_gradient);
+/* вывод значения ползунка и присвоение значения глобальной переменной number_end_gradient*/
+var slider_e_gradient=document.getElementById('number_end_gradient');
+var output_e_gradient=document.getElementById('outnumber_e_grad');
+output_e_gradient.innerHTML = slider_e_gradient.value;
 
-			})
-			.trigger('change');
-		});
-		/*присваиваем значение глобальной переменной color_end_gradient*/
+slider_e_gradient.oninput = function(){
+	output_e_gradient.innerHTML=this.value;
+	number_end_gradient=this.value;
+	console.log('number_end_gradient: ' + number_end_gradient);
+}
+$(function() {
+	var color;
+	$("#color_start_gradient").change(function() {
+		color = $(this);
+		color_start_gradient = color.val();
+		console.log('start grad col ' + color_start_gradient);
+	})
+	.trigger('change');
+});
+
+/*присваиваем значение глобальной переменной color_end_gradient*/
 		$(function() {
 			var color;
 			$("#color_end_gradient").change(function() {
 				color = $(this);
-
 				color_end_gradient = color.val();
 				console.log('end grad col' + color_end_gradient);
 
 			})
 			.trigger('change');
 		});
+
+
+
+/*присваиваем значение глобальной переменной color_end_gradient*/
+
 		$(function input_grad_brigtness() {
 			var elem;
 			$("#brighness_gradient").change(function() {
@@ -295,6 +354,7 @@
 		/*функция отправки данных */
 		$('#send').click(function ()
 		{
+
 			col_start_grad_r=(hexToRgb(color_start_gradient).r)*brighness_gradient;
 			col_start_grad_g=(hexToRgb(color_start_gradient).g)*brighness_gradient;
 			col_start_grad_b=(hexToRgb(color_start_gradient).b)*brighness_gradient;
@@ -312,51 +372,53 @@
 				color_end_grad_r: col_end_grad_r,
 				color_end_grad_g: col_end_grad_g,
 				color_end_grad_b: col_end_grad_b,
+				mode: mode,
 
 			}
 
 			xhr.open("POST", '/MyLedstripGradient', true);
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 			xhr.send(JSON.stringify(led));
+	});
 
-
-
-
-		});
-
-	}
-	else if (val == 'solid')
+}
+else if (val == 'solid')
 	{
-		repl.html('<p>START</p> <p class="non"><input id="number_start_solid" name="number_start_solid" type="range" min="1" max="18" value="0" class="range purple"> <output id="outnumber" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="18" value="18" class="range purple"> <output id="outnumber" for="number_end_solid"></output></p>	<p>COLOR</p><p> <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p>BRIGHTNESS</p><p><input id="brighness_solid" name="brighness_solid" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');
+		if (mode== 1)
+		{
+			repl.html('<p>START</p> <p class="non"><input id="number_start_solid"  type="range" min="1" max="12" value="1" class="range purple"> <output id="outnumber_s_solid" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="12" value="12" class="range purple"> <output id="outnumber_e_solid"></output></p>	<p>COLOR</p><p> <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p>BRIGHTNESS</p><p><input id="brighness_solid" name="brighness_solid" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');
+			number_start_solid=1;
+			number_end_solid=12;
+		}
+		else if (mode ==2)
+		{
+			repl.html('<p>START</p> <p class="non"><input id="number_start_solid"  type="range" min="1" max="49" value="1" class="range purple"> <output id="outnumber_s_solid" for="number_start_solid"></output></p>     <p>END</p><p class="non"><input id="number_end_solid" name="number_end_solid" type="range" min="1" max="49" value="49" class="range purple"> <output id="outnumber_e_solid" ></output></p>	<p>COLOR</p><p> <input type="color" id="color_solid" name="color_solid" class="color" value="#FD0000"></p><p>BRIGHTNESS</p><p><input id="brighness_solid" name="brighness_solid" type="range" min="0" max="100" value="50" class="range blue"></p><p><input type="button" value="SEND" id="send"></p>');
+			number_start_solid=1;
+			number_end_solid=49;
+		}
+
 		/*выводим значение ползунка и присваиваем  значение глобальной переменной number_start_solid*/
-		$(function() {
-			var elem;
-			$("#number_start_solid").change(function() {
-				elem = $(this);
-				elem
-				.next("#outnumber")
-				.text(elem.val());
-				number_start_solid = elem.val();
-				console.log("number_start_solid:" + number_start_solid);
-			})
-			.trigger('change');
-		});
+		var slider_s_solid=document.getElementById('number_start_solid');
+		var output_s_solid=document.getElementById('outnumber_s_solid');
+		output_s_solid.innerHTML = slider_s_solid.value;
 
-		/*выводим значение ползунка и присваиваем  значение глобальной переменной number_end_solid*/
-		$(function() {
-			var elem;
-			$("#number_end_solid").change(function() {
-				elem = $(this);
-				elem
-				.next("#outnumber")
-				.text(elem.val());
+		slider_s_solid.oninput = function(){
+			output_s_solid.innerHTML=this.value;
+			number_start_solid=this.value;
+			console.log('number_start_solid: ' + number_start_solid);
+		}
 
-				number_end_solid = elem.val();
-				console.log("number_end_solid:" +number_end_solid);
 
-			})
-			.trigger('change');
-		});
+		var slider_e_solid=document.getElementById('number_end_solid');
+		var output_e_solid=document.getElementById('outnumber_e_solid');
+		output_e_solid.innerHTML = slider_e_solid.value;
+
+		slider_e_solid.oninput = function(){
+			output_e_solid.innerHTML=this.value;
+			number_end_solid=this.value;
+			console.log('number_end_solid: ' + number_end_solid);
+		}
+
 
 		/*присваиваем  значение глобальной переменной color_solid*/
 		$(function() {
@@ -395,6 +457,7 @@
 				color_solid_r: col_solid_r,
 				color_solid_g: col_solid_g,
 				color_solid_b: col_solid_b,
+				mode: mode,
 			}
 
 			xhr.open("POST", '/MyLedstripSolid', true);
@@ -417,6 +480,42 @@
 			xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 			xhr.send(JSON.stringify());
 		});
+	}
+	else if (val == 'police')
+	{
+		if (mode== 1)
+		{
+			repl.html('<p><input type="button" value="SEND" id="send"></p>');
+			$('#send').click(function ()
+			{
+				xhr.open("POST", '/MyLedstripPolice1', true);
+				xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+				xhr.send(JSON.stringify());
+			});
+		}
+		if (mode== 2)
+		{
+			repl.html('<p><input type="button" value="SEND" id="send"></p>');
+			$('#send').click(function ()
+			{
+				xhr.open("POST", '/MyLedstripPolice2', true);
+				xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+				xhr.send(JSON.stringify());
+			});
+		}
+	}
+	else if (val == 'rainbow_wave')
+	{
+		if (mode== 1)
+		{
+			repl.html('<p><input type="button" value="SEND" id="send"></p>');
+			$('#send').click(function ()
+			{
+				xhr.open("POST", '/MyLedstripRainbowWAVE', true);
+				xhr.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+				xhr.send(JSON.stringify());
+			});
+		}
 	}
 
 });
